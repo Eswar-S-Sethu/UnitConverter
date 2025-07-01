@@ -1,4 +1,6 @@
 use wasm_bindgen::prelude::*;
+use serde::{Deserialize,Serialize};
+use wasm_bindgen::JsValue;
 
 // ==========================
 //   MASS / WEIGHT CONVERSIONS
@@ -331,3 +333,40 @@ pub fn gpa_to_percent(gpa: f64) -> f64 {
     }
 }
 
+// --------------- BULK CONVERSIONS ---------------------
+// ------------------------------------------------------
+#[wasm_bindgen]
+pub fn convert_columns(data_json: &str, from_unit: &str, to_unit: &str, whole_num: &JsValue, roundoff: &JsValue) -> String {
+    let parsed: Vec<Vec<String>> = serde_json::from_str(data_json).unwrap_or_default();
+    
+    let whole=whole_num.as_bool().unwrap_or_default();
+    let rounded=roundoff.as_bool().unwrap_or_default();
+
+    let converted: Vec<Vec<String>> = parsed
+        .into_iter()
+        .map(|row| {
+            row.into_iter()
+                .map(|val| {
+                    match convert_value(&val, from_unit, to_unit, &whole, &rounded) {
+                        Ok(v) => v.to_string(),
+                        Err(_) => val,
+                    }
+                })
+                .collect()
+        })
+        .collect();
+
+    serde_json::to_string(&converted).unwrap()
+}
+
+fn convert_value(value: &str, from: &str, to: &str, whole_number: &bool, round_off: &bool) -> Result<f64, ()> {
+    let parsed = value.parse::<f64>().map_err(|_| ())?;
+    match (from, to) {
+        ("lbs", "kg") => Ok(parsed * 0.453592),
+        ("kg", "lbs") => Ok(parsed / 0.453592),
+        ("cm", "inch") => Ok(parsed / 2.54),
+        ("inch", "cm") => Ok(parsed * 2.54),
+        // Add more rules here
+        _ => Err(()),
+    }
+}
