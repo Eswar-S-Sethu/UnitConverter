@@ -1,337 +1,10 @@
 use wasm_bindgen::prelude::*;
-use serde::{Deserialize,Serialize};
 use wasm_bindgen::JsValue;
-
-// ==========================
-//   MASS / WEIGHT CONVERSIONS
-// ==========================
-
-#[wasm_bindgen]
-pub fn lbs_to_kg(lbs: f64) -> f64 {
-    lbs / 2.20462
-}
-
-#[wasm_bindgen]
-pub fn kg_to_lbs(kg: f64) -> f64 {
-    kg * 2.20462
-}
-
-// ==========================
-//   LENGTH / DISTANCE CONVERSIONS
-// ==========================
-
-#[wasm_bindgen]
-pub fn cm_to_in(cm: f64) -> f64 {
-    cm / 2.54
-}
-
-#[wasm_bindgen]
-pub fn in_to_cm(inches: f64) -> f64 {
-    inches * 2.54
-}
-
-#[wasm_bindgen]
-pub fn m_to_km(m: f64) -> f64 {
-    m / 1000.0
-}
-
-#[wasm_bindgen]
-pub fn km_to_m(km: f64) -> f64 {
-    km * 1000.0
-}
-
-// ==========================
-//   TEMPERATURE CONVERSIONS
-// ==========================
-
-#[wasm_bindgen]
-pub fn c_to_f(c: f64) -> f64 {
-    c * 9.0 / 5.0 + 32.0
-}
-
-#[wasm_bindgen]
-pub fn f_to_c(f: f64) -> f64 {
-    (f - 32.0) * 5.0 / 9.0
-}
-
-#[wasm_bindgen]
-pub fn c_to_k(c: f64) -> f64 {
-    c + 273.15
-}
-
-#[wasm_bindgen]
-pub fn k_to_c(k: f64) -> f64 {
-    k - 273.15
-}
-
-// ==========================
-//   SPEED CONVERSIONS
-// ==========================
-
-#[wasm_bindgen]
-pub fn kmh_to_mph(kmh: f64) -> f64 {
-    kmh * 0.621371
-}
-
-#[wasm_bindgen]
-pub fn mph_to_kmh(mph: f64) -> f64 {
-    mph / 0.621371
-}
-
-// =============================
-// AREA CONVERSIONS
-// =============================
-
-#[wasm_bindgen]
-pub fn sqm_to_sqft(sqm: f64) -> f64 {
-    sqm * 10.7639
-}
-
-#[wasm_bindgen]
-pub fn sqft_to_sqm(sqft: f64) -> f64 {
-    sqft / 10.7639
-}
-
-// =============================
-// VOLUME CONVERSIONS
-// =============================
-
-#[wasm_bindgen]
-pub fn l_to_gal(l: f64) -> f64 {
-    l * 0.264172
-}
-
-#[wasm_bindgen]
-pub fn gal_to_l(gal: f64) -> f64 {
-    gal / 0.264172
-}
-
-// ============================
-// TIME CONVERSIONS
-// ============================
-
-#[wasm_bindgen]
-pub fn hrs_to_min(hrs: f64) -> f64 {
-    hrs * 60.0
-}
-
-#[wasm_bindgen]
-pub fn min_to_sec(min: f64) -> f64 {
-    min * 60.0
-}
-
-// ============================
-// PRESSURE CONVERSIONS
-// ============================
-
-#[wasm_bindgen]
-pub fn pa_to_psi(pa: f64) -> f64 {
-    pa * 0.000145038
-}
-
-#[wasm_bindgen]
-pub fn psi_to_pa(psi: f64) -> f64 {
-    psi / 0.000145038
-}
-
-// ============================
-// ENERGY CONVERSIONS
-// ============================
-
-#[wasm_bindgen]
-pub fn j_to_cal(j: f64) -> f64 {
-    j / 4.184
-}
-
-#[wasm_bindgen]
-pub fn cal_to_j(cal: f64) -> f64 {
-    cal * 4.184
-}
-
-// ===========================
-// POWER CONVERSIONS
-// ===========================
-
-#[wasm_bindgen]
-pub fn w_to_kw(w: f64) -> f64 {
-    w / 1000.0
-}
-
-#[wasm_bindgen]
-pub fn kw_to_w(kw: f64) -> f64 {
-    kw * 1000.0
-}
-
-// ===========================
-// DIGITAL STORAGE CONVERSIONS
-// ===========================
-
-#[wasm_bindgen]
-pub fn kb_to_mb(kb: f64) -> f64 {
-    kb / 1024.0
-}
-
-#[wasm_bindgen]
-pub fn mb_to_gb(mb: f64) -> f64 {
-    mb / 1024.0
-}
-
-#[wasm_bindgen]
-pub fn gb_to_tb(gb: f64) -> f64 {
-    gb / 1024.0
-}
-
-// ===========================
-// RING SIZE CONVERSIONS (US ↔ EU)
-// ===========================
-
-#[wasm_bindgen]
-pub fn us_to_eu_ring(us_size: f64) -> f64 {
-    (us_size * 2.5) + 36.5
-}
-
-#[wasm_bindgen]
-pub fn eu_to_us_ring(eu_size: f64) -> f64 {
-    (eu_size - 36.5) / 2.5
-}
-
-// ===========================
-// Niche Conversions
-// ===========================
-
-// Shoe size US to EU (approx)
-#[wasm_bindgen]
-pub fn us_shoe_to_eu(us_size: f64) -> f64 {
-    us_size + 33.0
-}
-
-#[wasm_bindgen]
-pub fn eu_shoe_to_us(eu_size: f64) -> f64 {
-    eu_size - 33.0
-}
-
-// ===========================
-// CLOTHING SIZE CONVERSIONS (US ↔ EU)
-// ===========================
-
-#[wasm_bindgen]
-pub fn us_to_eu_clothing(us_size: f64) -> f64 {
-    us_size + 30.0
-}
-
-#[wasm_bindgen]
-pub fn eu_to_us_clothing(eu_size: f64) -> f64 {
-    eu_size - 30.0
-}
-
-// ===========================
-// COOKING CONVERSIONS
-// ===========================
-
-#[wasm_bindgen]
-pub fn tsp_to_tbsp(tsp: f64) -> f64 {
-    tsp / 3.0
-}
-
-#[wasm_bindgen]
-pub fn tbsp_to_tsp(tbsp: f64) -> f64 {
-    tbsp * 3.0
-}
-
-#[wasm_bindgen]
-pub fn cup_to_ml(cup: f64) -> f64 {
-    cup * 236.588
-}
-
-#[wasm_bindgen]
-pub fn ml_to_cup(ml: f64) -> f64 {
-    ml / 236.588
-}
-
-#[wasm_bindgen]
-pub fn oz_to_grams(oz: f64) -> f64 {
-    oz * 28.3495
-}
-
-#[wasm_bindgen]
-pub fn grams_to_oz(g: f64) -> f64 {
-    g / 28.3495
-}
-
-// ===========================
-// FITNESS UNIT CONVERSIONS
-// ===========================
-
-#[wasm_bindgen]
-pub fn steps_to_km(steps: f64) -> f64 {
-    steps * 0.000762
-}
-
-#[wasm_bindgen]
-pub fn km_to_steps(km: f64) -> f64 {
-    km / 0.000762
-}
-
-// #[wasm_bindgen]
-// pub fn calories_burned_per_mets(mets: f64, weight_kg: f64, duration_min: f64) -> f64 {
-//     mets * 3.5 * weight_kg / 200.0 * duration_min
-// }
-
-// ===========================
-// FORCE CONVERSIONS
-// ===========================
-
-#[wasm_bindgen]
-pub fn newtons_to_pounds_force(n: f64) -> f64 {
-    n * 0.224809
-}
-
-#[wasm_bindgen]
-pub fn pounds_force_to_newtons(lbf: f64) -> f64 {
-    lbf / 0.224809
-}
-
-// ===========================
-// TYPING SPEED CONVERSIONS
-// ===========================
-
-#[wasm_bindgen]
-pub fn wpm_to_cpm(wpm: f64) -> f64 {
-    wpm * 5.0
-}
-
-#[wasm_bindgen]
-pub fn cpm_to_wpm(cpm: f64) -> f64 {
-    cpm / 5.0
-}
-
-// ===========================
-// UNIVERSITY GRADE CONVERSIONS
-// ===========================
-
-#[wasm_bindgen]
-pub fn percent_to_gpa(percent: f64) -> f64 {
-    match percent {
-        p if p >= 85.0 => 4.0,
-        p if p >= 75.0 => 3.7,
-        p if p >= 65.0 => 3.3,
-        p if p >= 55.0 => 2.7,
-        p if p >= 50.0 => 2.0,
-        _ => 0.0,
-    }
-}
-
-#[wasm_bindgen]
-pub fn gpa_to_percent(gpa: f64) -> f64 {
-    match gpa {
-        g if g >= 4.0 => 90.0,
-        g if g >= 3.7 => 80.0,
-        g if g >= 3.3 => 70.0,
-        g if g >= 2.7 => 60.0,
-        g if g >= 2.0 => 50.0,
-        _ => 40.0,
-    }
-}
+use image::{DynamicImage, GenericImageView, ImageOutputFormat};
+use std::io::Cursor;
+use sha2::{Digest, Sha256, Sha512};
+use sha1::Sha1;
+use md5::{Md5};
 
 // --------------- BULK CONVERSIONS ---------------------
 // ------------------------------------------------------
@@ -359,14 +32,293 @@ pub fn convert_columns(data_json: &str, from_unit: &str, to_unit: &str, whole_nu
     serde_json::to_string(&converted).unwrap()
 }
 
-fn convert_value(value: &str, from: &str, to: &str, whole_number: &bool, round_off: &bool) -> Result<f64, ()> {
+fn convert_value(
+    value: &str,
+    from: &str,
+    to: &str,
+    whole_number: &bool,
+    round_off: &bool,
+) -> Result<f64, ()> {
     let parsed = value.parse::<f64>().map_err(|_| ())?;
-    match (from, to) {
-        ("lbs", "kg") => Ok(parsed * 0.453592),
-        ("kg", "lbs") => Ok(parsed / 0.453592),
-        ("cm", "inch") => Ok(parsed / 2.54),
-        ("inch", "cm") => Ok(parsed * 2.54),
-        // Add more rules here
-        _ => Err(()),
+
+    let result = match (from, to) {
+        // Mass
+        ("mg", "g") => parsed / 1000.0,
+        ("g", "mg") => parsed * 1000.0,
+        ("g", "kg") => parsed / 1000.0,
+        ("kg", "g") => parsed * 1000.0,
+        ("kg", "tonne") => parsed / 1000.0,
+        ("tonne", "kg") => parsed * 1000.0,
+        ("oz", "g") => parsed * 28.3495,
+        ("g", "oz") => parsed / 28.3495,
+        ("lb", "kg") => parsed * 0.453592,
+        ("kg", "lb") => parsed / 0.453592,
+
+        // Length / Distance
+        ("mm", "cm") => parsed / 10.0,
+        ("cm", "mm") => parsed * 10.0,
+        ("cm", "m") => parsed / 100.0,
+        ("m", "cm") => parsed * 100.0,
+        ("m", "km") => parsed / 1000.0,
+        ("km", "m") => parsed * 1000.0,
+        ("inch", "cm") => parsed * 2.54,
+        ("cm", "inch") => parsed / 2.54,
+        ("ft", "m") => parsed * 0.3048,
+        ("m", "ft") => parsed / 0.3048,
+        ("yard", "m") => parsed * 0.9144,
+        ("m", "yard") => parsed / 0.9144,
+        ("mile", "km") => parsed * 1.60934,
+        ("km", "mile") => parsed / 1.60934,
+
+        // Area
+        ("sqm", "sqft") => parsed * 10.7639,
+        ("sqft", "sqm") => parsed / 10.7639,
+
+        // Volume
+        ("ml", "l") => parsed / 1000.0,
+        ("l", "ml") => parsed * 1000.0,
+        ("l", "gal") => parsed / 3.78541,
+        ("gal", "l") => parsed * 3.78541,
+
+        // Temperature
+        ("celsius", "fahrenheit") => (parsed * 9.0 / 5.0) + 32.0,
+        ("fahrenheit", "celsius") => (parsed - 32.0) * 5.0 / 9.0,
+        ("celsius", "kelvin") => parsed + 273.15,
+        ("kelvin", "celsius") => parsed - 273.15,
+        ("fahrenheit", "kelvin") => (parsed + 459.67) / 1.8,
+        ("kelvin", "fahrenheit") => (parsed * 1.8) - 459.67,
+
+        // Speed
+        ("kmh", "mph") => parsed / 1.60934,
+        ("mph", "kmh") => parsed * 1.60934,
+        ("ms", "kmh") => parsed * 3.6,
+        ("kmh", "ms") => parsed / 3.6,
+
+        // Power
+        ("w", "kw") => parsed / 1000.0,
+        ("kw", "w") => parsed * 1000.0,
+
+        // Pressure
+        ("pa", "kpa") => parsed / 1000.0,
+        ("kpa", "pa") => parsed * 1000.0,
+        ("bar", "pa") => parsed * 100000.0,
+        ("pa", "bar") => parsed / 100000.0,
+        ("psi", "pa") => parsed * 6894.76,
+        ("pa", "psi") => parsed / 6894.76,
+
+        // Energy
+        ("j", "kj") => parsed / 1000.0,
+        ("kj", "j") => parsed * 1000.0,
+        ("j", "cal") => parsed / 4.184,
+        ("cal", "j") => parsed * 4.184,
+
+        // Digital Storage
+        ("bit", "byte") => parsed / 8.0,
+        ("byte", "bit") => parsed * 8.0,
+        ("kb", "mb") => parsed / 1024.0,
+        ("mb", "gb") => parsed / 1024.0,
+        ("gb", "tb") => parsed / 1024.0,
+        ("tb", "gb") => parsed * 1024.0,
+        ("gb", "mb") => parsed * 1024.0,
+        ("mb", "kb") => parsed * 1024.0,
+
+        // Time
+        ("sec", "min") => parsed / 60.0,
+        ("min", "sec") => parsed * 60.0,
+        ("min", "hr") => parsed / 60.0,
+        ("hr", "min") => parsed * 60.0,
+        ("hr", "day") => parsed / 24.0,
+        ("day", "hr") => parsed * 24.0,
+
+        // Sound
+        ("dbm", "watt") => 10f64.powf(parsed / 10.0) / 1000.0,
+        ("watt", "dbm") => 10.0 * (parsed * 1000.0).log10(),
+
+        // Radiation
+        ("gy", "rad") => parsed * 100.0,       // Gray to Rad
+        ("rad", "gy") => parsed / 100.0,
+        ("sv", "rem") => parsed * 100.0,       // Sievert to Rem
+        ("rem", "sv") => parsed / 100.0,
+
+        // Electricity
+        ("amp", "milliamp") => parsed * 1000.0,
+        ("milliamp", "amp") => parsed / 1000.0,
+        ("volt", "millivolt") => parsed * 1000.0,
+        ("millivolt", "volt") => parsed / 1000.0,
+        ("ohm", "kiloohm") => parsed / 1000.0,
+        ("kiloohm", "ohm") => parsed * 1000.0,
+        ("farad", "microfarad") => parsed * 1_000_000.0,
+        ("microfarad", "farad") => parsed / 1_000_000.0,
+        ("coulomb", "millicoulomb") => parsed * 1000.0,
+        ("millicoulomb", "coulomb") => parsed / 1000.0,
+        ("watt_hour", "joule") => parsed * 3600.0,
+        ("joule", "watt_hour") => parsed / 3600.0,
+
+        // Illuminance
+        ("lux", "footcandle") => parsed / 10.764,
+        ("footcandle", "lux") => parsed * 10.764,
+
+        // Angle
+        ("deg", "rad") => parsed * std::f64::consts::PI / 180.0,
+        ("rad", "deg") => parsed * 180.0 / std::f64::consts::PI,
+        ("deg", "grad") => parsed * (200.0 / 180.0),
+        ("grad", "deg") => parsed * (180.0 / 200.0),
+
+        // Nautical
+        ("nautical_mile", "km") => parsed * 1.852,
+        ("km", "nautical_mile") => parsed / 1.852,
+        ("knot", "kmh") => parsed * 1.852,
+        ("kmh", "knot") => parsed / 1.852,
+
+        // Frequency
+        ("hz", "khz") => parsed / 1000.0,
+        ("khz", "hz") => parsed * 1000.0,
+        ("khz", "mhz") => parsed / 1000.0,
+        ("mhz", "khz") => parsed * 1000.0,
+        ("mhz", "ghz") => parsed / 1000.0,
+        ("ghz", "mhz") => parsed * 1000.0,
+
+        // Torque
+        ("nm", "lbft") => parsed * 0.737562,
+        ("lbft", "nm") => parsed / 0.737562,
+
+        // Fuel Economy
+        ("km_per_l", "l_per_100km") => 100.0 / parsed,
+        ("l_per_100km", "km_per_l") => 100.0 / parsed,
+        ("mpg_us", "km_per_l") => parsed * 0.425144,
+        ("km_per_l", "mpg_us") => parsed / 0.425144,
+        ("mpg_uk", "km_per_l") => parsed * 0.354006,
+        ("km_per_l", "mpg_uk") => parsed / 0.354006,
+
+        // Magnetism
+        ("tesla", "gauss") => parsed * 10000.0,
+        ("gauss", "tesla") => parsed / 10000.0,
+        ("wb", "mwb") => parsed * 1_000_000.0,  // Weber to microweber
+        ("mwb", "wb") => parsed / 1_000_000.0,
+
+        // Building and Construction units
+        ("sq_m", "sq_foot") => parsed * 10.7639,
+        ("sq_foot", "sq_m") => parsed / 10.7639,
+        ("cu_m", "cu_foot") => parsed * 35.3147,
+        ("cu_foot", "cu_m") => parsed / 35.3147,
+
+
+
+        _ => return Err(()),
+    };
+
+
+
+    // Apply formatting rules
+    let final_result = if *whole_number {
+        result.trunc()
+    } else if *round_off {
+        result.round()
+    } else {
+        result
+    };
+
+    Ok(final_result)
+}
+
+// Image Compressor -----------------
+#[wasm_bindgen]
+pub struct CompressedResult {
+    bytes: Vec<u8>,
+    format: String,
+    size_kb: f64,
+    width: u32,
+    height: u32,
+}
+
+#[wasm_bindgen]
+impl CompressedResult {
+    #[wasm_bindgen(getter)]
+    pub fn bytes(&self) -> Vec<u8> {
+        self.bytes.clone()
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn format(&self) -> String {
+        self.format.clone()
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn size_kb(&self) -> f64 {
+        self.size_kb
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn width(&self) -> u32 {
+        self.width
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn height(&self) -> u32 {
+        self.height
+    }
+}
+#[wasm_bindgen]
+pub fn compress_image(base64_input: &str, quality: u8, format: &str) -> Result<CompressedResult, JsValue> {
+    // Strip data URL prefix
+    let base64_data = base64_input.split(',').nth(1).ok_or("Invalid base64 input")?;
+    let image_data = base64::decode(base64_data).map_err(|_| "Failed to decode base64")?;
+
+    let img = image::load_from_memory(&image_data).map_err(|_| "Failed to load image")?;
+    let (width, height) = img.dimensions();
+    let mut buffer = Cursor::new(Vec::new());
+
+    // Determine format
+    let (target_format, fmt_str) = match format {
+        "jpg" => (ImageOutputFormat::Jpeg(quality), "JPG"),
+        "png" => (ImageOutputFormat::Png, "PNG"),
+        "original" => {
+            // Try to guess from data
+            match image::guess_format(&image_data) {
+                Ok(image::ImageFormat::Png) => (ImageOutputFormat::Png, "PNG"),
+                _ => (ImageOutputFormat::Jpeg(quality), "JPG"), // fallback
+            }
+        }
+        _ => return Err("Unknown format".into()),
+    };
+
+    img.write_to(&mut buffer, target_format)
+        .map_err(|_| "Failed to encode image")?;
+
+    let compressed_bytes = buffer.into_inner();
+    let size_kb = compressed_bytes.len() as f64 / 1024.0;
+
+    Ok(CompressedResult {
+        bytes: compressed_bytes,
+        format: fmt_str.to_string(),
+        size_kb,
+        width,
+        height,
+    })
+}
+#[wasm_bindgen]
+pub fn hash_file_bytes(data: &[u8], algo: &str) -> String {
+    match algo {
+        "md5" => {
+            let mut hasher = Md5::new();
+            hasher.update(data);
+            hex::encode(hasher.finalize())
+        }
+        "sha1" => {
+            let mut hasher = Sha1::new();
+            hasher.update(data);
+            hex::encode(hasher.finalize())
+        }
+        "sha256" => {
+            let mut hasher = Sha256::new();
+            hasher.update(data);
+            hex::encode(hasher.finalize())
+        }
+        "sha512" => {
+            let mut hasher = Sha512::new();
+            hasher.update(data);
+            hex::encode(hasher.finalize())
+        }
+        _ => "Unknown algorithm".to_string(),
     }
 }
