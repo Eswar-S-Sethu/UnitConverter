@@ -5,6 +5,8 @@ use std::io::Cursor;
 use sha2::{Digest, Sha256, Sha512};
 use sha1::Sha1;
 use md5::{Md5};
+use regex::RegexBuilder;
+use serde::{Serialize, Deserialize};
 
 // --------------- BULK CONVERSIONS ---------------------
 // ------------------------------------------------------
@@ -321,4 +323,71 @@ pub fn hash_file_bytes(data: &[u8], algo: &str) -> String {
         }
         _ => "Unknown algorithm".to_string(),
     }
+}
+
+// JSON Validator
+
+#[derive(Serialize, Deserialize)]
+pub struct MatchResult {
+    start: usize,
+    end: usize,
+    matched: String,
+    groups: Vec<String>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct RegexResponse {
+    ok: bool,
+    matches: Vec<MatchResult>,
+    error: Option<String>,
+}
+
+#[wasm_bindgen]
+pub fn run_regex(pattern: &str, text: &str, flags: &str) -> String {
+    let mut builder = RegexBuilder::new(pattern);
+    builder.case_insensitive(flags.contains('i'));
+    builder.multi_line(flags.contains('m'));
+    builder.dot_matches_new_line(flags.contains('s')); // optional
+    builder.ignore_whitespace(false);
+
+    let regex = match builder.build() {
+        Ok(r) => r,
+        Err(e) => {
+            let error = RegexResponse {
+                ok: false,
+                matches: vec![],
+                error: Some(e.to_string()),
+            };
+            return serde_json::to_string(&error).unwrap();
+        }
+    };
+
+    let mut results = Vec::new();
+
+    for cap in regex.captures_iter(text) {
+        let mat = cap.get(0).unwrap();
+        let groups: Vec<String> = cap.iter()
+            .skip(1)
+            .filter_map(|g| g.map(|m| m.as_str().to_string()))
+            .collect();
+
+        results.push(MatchResult {
+            start: mat.start(),
+            end: mat.end(),
+            matched: mat.as_str().to_string(),
+            groups,
+        });
+
+        if !flags.contains('g') {
+            break;
+        }
+    }
+
+    let response = RegexResponse {
+        ok: true,
+        matches: results,
+        error: None,
+    };
+
+    serde_json::to_string(&response).unwrap()
 }
